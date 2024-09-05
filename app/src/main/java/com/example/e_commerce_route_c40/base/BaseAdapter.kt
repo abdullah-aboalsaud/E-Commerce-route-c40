@@ -1,7 +1,6 @@
 package com.example.e_commerce_route_c40.base
 
 
-import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
@@ -10,7 +9,7 @@ import androidx.viewbinding.ViewBinding
 abstract class BaseAdapter<TypeItemList, VB : ViewBinding> :
     RecyclerView.Adapter<BaseAdapter<TypeItemList, VB>.ViewHolder>() {
 
-    private var items: MutableList<TypeItemList>? = null
+    private var items: MutableList<TypeItemList> = mutableListOf()
 
     inner class ViewHolder(val binding: VB) : RecyclerView.ViewHolder(binding.root)
 
@@ -24,34 +23,27 @@ abstract class BaseAdapter<TypeItemList, VB : ViewBinding> :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = items?.get(position)
-        bindData(holder.binding, item!!, position)
+        val item = items[position]
+        bindData(holder.binding, item, position)
     }
 
-    override fun getItemCount(): Int = items?.size ?: 0
+    override fun getItemCount(): Int = items.size
 
     fun addDataToList(item: TypeItemList) {
-        items?.add(item)
-        notifyItemChanged(items?.size!! - 1)
+        items.add(item)
+        notifyItemChanged(items.lastIndex)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun addDataToList(items: MutableList<TypeItemList>) {
-        items.addAll(items)
-        notifyDataSetChanged()
+    open fun addDataToList(list: MutableList<TypeItemList>) {
+        val preItemSize = items.lastIndex
+        if (items.addAll(list))
+            notifyItemRangeInserted(preItemSize, list.size)
     }
 
-    fun removeItem(position: Int) {
-        items?.removeAt(position)
-        notifyItemChanged(position)
+    open fun removeItem(position: Int) {
+        items.removeAt(position)
+        notifyItemRemoved(position)
     }
 
-    fun removeItem(item: TypeItemList) {
-        val index = items?.indexOf(item) ?: -1
-        if (index != -1)
-            items!!.removeAt(index)
-        return
-    }
-
-
+    open fun getItem(pos: Int): TypeItemList = items[pos]
 }
