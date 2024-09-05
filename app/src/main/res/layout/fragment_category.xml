@@ -12,6 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_margin="8dp"
+        style="@style/rv_category_styleInFrament"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/layout_sub_category"

@@ -96,4 +96,10 @@
         <item name="strokeColor">#B3C4D2</item>
         <item name="strokeWidth">@dimen/_1sdp</item>
     </style>
+
+    <style name="rv_category_styleInFrament">
+        <item name="android:background">#80DBE4ED</item>
+
+
+    </style>
 </resources>
