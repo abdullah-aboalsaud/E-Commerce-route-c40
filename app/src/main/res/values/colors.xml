@@ -7,4 +7,6 @@
     <color name="lite_color">#99004182</color>
     <color name="gray">#A9A9A9</color>
     <color name="main_tv_color">#06004F</color>
+    <color name="blue">#06004F</color>
+
 </resources>
