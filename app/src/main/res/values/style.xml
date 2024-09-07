@@ -94,4 +94,5 @@
         <item name="strokeColor">#B3C4D2</item>
         <item name="strokeWidth">@dimen/_1sdp</item>
     </style>
+
 </resources>

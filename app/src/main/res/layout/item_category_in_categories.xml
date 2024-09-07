@@ -5,10 +5,10 @@
     android:layout_height="wrap_content">
 
     <View
-        android:id="@+id/ghost_view"
+        android:id="@+id/selected_view"
         android:layout_width="8dp"
         android:layout_height="match_parent"
-        android:background="@color/main_color"
+        android:background="@drawable/selected_view_visable"
         android:visibility="gone"
 
         />

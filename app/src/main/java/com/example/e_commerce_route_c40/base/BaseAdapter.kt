@@ -1,7 +1,6 @@
 package com.example.e_commerce_route_c40.base
 
 
-import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
@@ -10,13 +9,13 @@ import androidx.viewbinding.ViewBinding
 abstract class BaseAdapter<TypeItemList, VB : ViewBinding> :
     RecyclerView.Adapter<BaseAdapter<TypeItemList, VB>.ViewHolder>() {
 
-    private var items: MutableList<TypeItemList>? = null
+    private var items: MutableList<TypeItemList?> = mutableListOf()
 
     inner class ViewHolder(val binding: VB) : RecyclerView.ViewHolder(binding.root)
 
     abstract fun getBinding(parent: ViewGroup, viewType: Int): VB
 
-    abstract fun bindData(binding: VB, item: TypeItemList, position: Int)
+    abstract fun bindData(binding: VB, item: TypeItemList?, position: Int)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = getBinding(parent, viewType)
@@ -24,34 +23,46 @@ abstract class BaseAdapter<TypeItemList, VB : ViewBinding> :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = items?.get(position)
-        bindData(holder.binding, item!!, position)
+        val item = items[position]
+        bindData(holder.binding, item, position)
     }
 
-    override fun getItemCount(): Int = items?.size ?: 0
+    override fun getItemCount(): Int = items.size
 
     fun addDataToList(item: TypeItemList) {
-        items?.add(item)
-        notifyItemChanged(items?.size!! - 1)
+        items.add(item)
+        notifyItemChanged(items.lastIndex)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun addDataToList(items: MutableList<TypeItemList>) {
-        items.addAll(items)
-        notifyDataSetChanged()
-    }
+    open fun addDataToList(list: MutableList<TypeItemList>) {
+        val preItemSize = items.lastIndex
+        list.forEach {
+            if (it != null) items.add(it)
+        }
 
-    fun removeItem(position: Int) {
-        items?.removeAt(position)
-        notifyItemChanged(position)
-    }
-
-    fun removeItem(item: TypeItemList) {
-        val index = items?.indexOf(item) ?: -1
-        if (index != -1)
-            items!!.removeAt(index)
-        return
+        notifyItemRangeInserted(preItemSize, list.size)
     }
 
 
+    open fun removeItem(position: Int) {
+        items.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
+    open fun removeItems() {
+        val sizeList = items.lastIndex
+        items.clear()
+        notifyItemRangeRemoved(0, sizeList)
+    }
+
+    open fun summitList(list: MutableList<TypeItemList?>?) {
+        val sizeList = items.lastIndex
+        items = list?.filterNotNull()?.toMutableList()!!
+//        notifyDataSetChanged()
+        notifyItemRangeRemoved(0, sizeList)
+
+
+    }
+
+    open fun getItem(pos: Int): TypeItemList? = items[pos]
 }

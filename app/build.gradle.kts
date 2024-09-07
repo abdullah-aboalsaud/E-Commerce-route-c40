@@ -68,7 +68,16 @@ dependencies {
 
     implementation (libs.circleimageview)
 
-
+    // ViewModel
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    // LiveData
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    // Retrofit
+    implementation(libs.retrofit)
+    // Converter Gson
+    implementation(libs.converter.gson)
+    //Logging Interceptor
+    implementation(libs.logging.interceptor)
 
 
 }
