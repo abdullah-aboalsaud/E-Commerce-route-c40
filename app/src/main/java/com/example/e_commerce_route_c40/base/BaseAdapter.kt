@@ -9,13 +9,13 @@ import androidx.viewbinding.ViewBinding
 abstract class BaseAdapter<TypeItemList, VB : ViewBinding> :
     RecyclerView.Adapter<BaseAdapter<TypeItemList, VB>.ViewHolder>() {
 
-    private var items: MutableList<TypeItemList> = mutableListOf()
+    private var items: MutableList<TypeItemList?> = mutableListOf()
 
     inner class ViewHolder(val binding: VB) : RecyclerView.ViewHolder(binding.root)
 
     abstract fun getBinding(parent: ViewGroup, viewType: Int): VB
 
-    abstract fun bindData(binding: VB, item: TypeItemList, position: Int)
+    abstract fun bindData(binding: VB, item: TypeItemList?, position: Int)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = getBinding(parent, viewType)
@@ -36,14 +36,33 @@ abstract class BaseAdapter<TypeItemList, VB : ViewBinding> :
 
     open fun addDataToList(list: MutableList<TypeItemList>) {
         val preItemSize = items.lastIndex
-        if (items.addAll(list))
-            notifyItemRangeInserted(preItemSize, list.size)
+        list.forEach {
+            if (it != null) items.add(it)
+        }
+
+        notifyItemRangeInserted(preItemSize, list.size)
     }
+
 
     open fun removeItem(position: Int) {
         items.removeAt(position)
         notifyItemRemoved(position)
     }
 
-    open fun getItem(pos: Int): TypeItemList = items[pos]
+    open fun removeItems() {
+        val sizeList = items.lastIndex
+        items.clear()
+        notifyItemRangeRemoved(0, sizeList)
+    }
+
+    open fun summitList(list: MutableList<TypeItemList?>?) {
+        val sizeList = items.lastIndex
+        items = list?.filterNotNull()?.toMutableList()!!
+//        notifyDataSetChanged()
+        notifyItemRangeRemoved(0, sizeList)
+
+
+    }
+
+    open fun getItem(pos: Int): TypeItemList? = items[pos]
 }
